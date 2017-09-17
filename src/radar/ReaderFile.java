@@ -4,38 +4,36 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class ReaderFile {
 
 	private static Map<String, Object> dataCamp;
-	private static ArrayList<Integer> minePosX;
-	private static ArrayList<Integer> minePosY;
+	private static Map<Integer, Integer> mines;
 	
 	public static Map<String, Object> read(String file){
 		dataCamp = new HashMap<>();
-		minePosX = new ArrayList<>();
-		minePosY = new ArrayList<>();
+		mines = new TreeMap<>();
+		int x, y;
+		Path path = Paths.get(file);
 		
-		Path path = Paths.get(file);  
-		
-		try(Scanner sc = new Scanner(Files.newBufferedReader(path))){
+		try(Scanner sc = new Scanner(Files.newBufferedReader(path))) {
 		    sc.useDelimiter("[ \n]");
-			
+
 		    dataCamp.put("weight", sc.nextInt());
 		    dataCamp.put("height", sc.nextInt());
 		    dataCamp.put("totalMines", sc.nextInt());
 
 			while(sc.hasNext()){
-				minePosX.add(sc.nextInt());
-				minePosY.add(sc.nextInt());
+				x = sc.nextInt();
+				y = sc.nextInt();
+				mines.put(x, y);
 			}
 
-			dataCamp.put("mineX", minePosX);
-			dataCamp.put("mineY", minePosY);
+			dataCamp.put("mines", mines);
 
 			return dataCamp;
 		} catch(IOException e){
